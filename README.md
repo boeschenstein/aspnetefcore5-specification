@@ -10,6 +10,8 @@ Start UI (Swagger)
 
 ## Specification Pattern
 
+Source: <https://deviq.com/specification-pattern/>
+
 ### ISpecification<T>
   
 ```cs
