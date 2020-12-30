@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MySpecificTest.Infrastructure;
+using MySpecificTest.Infrastructure.SpecificationPattern;
 
 namespace MySpecificTest.WebApi.Controllers
 {
@@ -49,6 +50,18 @@ namespace MySpecificTest.WebApi.Controllers
                         Content = "I wrote an app using EF Core!"
                     });
                 db.SaveChanges();
+
+                // Query by Specification Repository
+                GenericRepository<Blog> repo = new GenericRepository<Blog>(db); // todo: inject this
+                IEnumerable<Blog> blogs = repo.List(new BlogWithItemsSpecification("https://devblogs.microsoft.com/dotnet"));
+                foreach (var item in blogs)
+                {
+                    Console.WriteLine($"== BLOG: {item.BlogId}, {item.Url}");
+                    foreach (var post in item.Posts)
+                    {
+                        Console.WriteLine($"    {post.Title}");
+                    }
+                }
 
                 // Delete
                 Console.WriteLine("Delete the blog");
