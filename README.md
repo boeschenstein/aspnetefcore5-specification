@@ -1,4 +1,24 @@
-# ASP.NET Core 5, Specification Pattern
+# ASP.NET Core 5 + EF
+
+## Main Goals
+
+- Specification pattern
+- Integration tests
+
+## Content
+
+- [ASP.NET Core 5 + EF](#aspnet-core-5--ef)
+  - [Main Goals](#main-goals)
+  - [Content](#content)
+  - [Add EF](#add-ef)
+  - [Specification Pattern](#specification-pattern)
+    - [ISpecification\<T>](#ispecificationt)
+    - [BaseSpecification\<T> : ISpecification\<T>](#basespecificationt--ispecificationt)
+    - [Example Specification](#example-specification)
+    - [Generic Repository](#generic-repository)
+  - [Move ConnectionString to appSettings.json](#move-connectionstring-to-appsettingsjson)
+  - [Inject Generic Repository](#inject-generic-repository)
+  - [Information](#information)
 
 ## Add EF
 
@@ -12,7 +32,7 @@ Start UI (Swagger)
 
 Source: <https://deviq.com/specification-pattern/>
 
-### ISpecification<T>
+### ISpecification\<T>
   
 ```cs
 public interface ISpecification<T>
@@ -22,7 +42,7 @@ public interface ISpecification<T>
 }
 ```
 
-### BaseSpecification<T> : ISpecification<T>
+### BaseSpecification\<T> : ISpecification\<T>
 
 ```cs
 public abstract class BaseSpecification<T> : ISpecification<T>
