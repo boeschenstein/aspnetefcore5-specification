@@ -10,6 +10,8 @@ Start UI (Swagger)
 
 ## Specification Pattern
 
+Source: <https://deviq.com/specification-pattern/>
+
 ### ISpecification<T>
   
 ```cs
@@ -80,3 +82,41 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     }
 }
 ```
+
+## Move ConnectionString to appSettings.json
+
+Add ConnectionString to appSettings:
+
+```json
+"ConnectionStrings": {
+  "BloggingConnection": "Server=(localdb)\\mssqllocaldb;Database=BloggingEFSpecificTest;Trusted_Connection=True;MultipleActiveResultSets=true;"
+},
+```
+
+Use ConnectionString from appSettings:
+
+```cs
+services.AddDbContext<BloggingContext>(c => c.UseSqlServer(Configuration.GetConnectionString("BloggingConnection")));
+```
+
+Make use of change: replace OnConfiguring with this:
+
+```cs
+public BloggingContext(DbContextOptions<BloggingContext> options) : base(options)
+{ }
+```
+
+Inject Context where needed (Controller is not a good example, please use a repository):
+
+```cs
+public WeatherForecastController(
+    BloggingContext bloggingContext
+)
+{
+    _bloggingContext = bloggingContext;
+}
+```
+
+## Information
+
+- Basics: <https://github.com/boeschenstein/angular9-dotnetcore-ef-sql>
