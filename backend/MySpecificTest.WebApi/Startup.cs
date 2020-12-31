@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MySpecificTest.Infrastructure;
+using MySpecificTest.Infrastructure.SpecificationPattern;
 
 namespace MySpecificTest.WebApi
 {
@@ -28,6 +29,8 @@ namespace MySpecificTest.WebApi
             });
 
             services.AddDbContext<BloggingContext>(c => c.UseSqlServer(Configuration.GetConnectionString("BloggingConnection")));
+
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

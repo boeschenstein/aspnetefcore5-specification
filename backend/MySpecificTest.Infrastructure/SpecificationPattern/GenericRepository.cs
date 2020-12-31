@@ -9,9 +9,9 @@ namespace MySpecificTest.Infrastructure.SpecificationPattern
     /// </summary>
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly DbContext _dbContext;
+        private readonly BloggingContext _dbContext;
 
-        public GenericRepository(DbContext dbContext)
+        public GenericRepository(BloggingContext dbContext)
         {
             _dbContext = dbContext;
         }

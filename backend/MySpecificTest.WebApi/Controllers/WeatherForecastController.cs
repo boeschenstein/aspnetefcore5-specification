@@ -19,11 +19,16 @@ namespace MySpecificTest.WebApi.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly BloggingContext db;
+        private readonly IGenericRepository<Blog> repo;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, BloggingContext bloggingContext)
+        public WeatherForecastController(
+            ILogger<WeatherForecastController> logger,
+            BloggingContext bloggingContext,
+            IGenericRepository<Blog> repository)
         {
             _logger = logger;
             db = bloggingContext;
+            repo = repository;
         }
 
         [HttpGet]
@@ -52,7 +57,6 @@ namespace MySpecificTest.WebApi.Controllers
             db.SaveChanges();
 
             // Query by Specification Repository
-            GenericRepository<Blog> repo = new GenericRepository<Blog>(db); // todo: inject this
             IEnumerable<Blog> blogs = repo.List(new BlogWithItemsSpecification("https://devblogs.microsoft.com/dotnet"));
             foreach (var item in blogs)
             {

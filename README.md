@@ -117,6 +117,24 @@ public WeatherForecastController(
 }
 ```
 
+## Inject Generic Repository
+
+Define Generic Injection:
+
+```cs
+services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+```
+
+Inject:
+
+```cs
+public WeatherForecastController(
+    IGenericRepository<Blog> repository)
+{
+    _repository = repository;
+}
+```
+
 ## Information
 
 - Basics: <https://github.com/boeschenstein/angular9-dotnetcore-ef-sql>
