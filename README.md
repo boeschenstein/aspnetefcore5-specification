@@ -3,6 +3,7 @@
 ## Main Goals
 
 - Specification pattern
+- MediatR
 - Integration tests
 
 ## Content
@@ -19,6 +20,8 @@
   - [Move ConnectionString to appSettings.json](#move-connectionstring-to-appsettingsjson)
   - [Inject Generic Repository](#inject-generic-repository)
   - [MediatR](#mediatr)
+  - [Integration Tests](#integration-tests)
+    - [Execute WebApi Controller Endpoint](#execute-webapi-controller-endpoint)
   - [Information](#information)
 
 ## Add EF
@@ -202,8 +205,78 @@ public class BlogWithItemsRequestHandler : IRequestHandler<BlogWithItemsRequest,
 }
 ```
 
+## Integration Tests
+
+|            | Unit Test                                               | Integration Test                                                             |
+| ---------- | ------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| technique  | use mocks, fakes                                        | use actual components                                                        |
+| complexity | simple test                                             | require more code                                                            |
+| speed      | fast                                                    | slow                                                                         |
+| goal       | test every aspect/edge case<br>of an algorithm          | text generic access (like crud) for<br>each technology (file, database, ...) |
+| scope      | should only test code within<br>the developer's control | often do include<br>infrastructure concerns                                  |
+
+Add new solution for Unit testing:
+
+```cmd
+dotnet new xunit -o MySpecificTest.Infrastructure.Tests
+dotnet sln add .\MySpecificTest.Infrastructure.Tests
+```
+
+Add new solution for Integration testing:
+
+```cmd
+dotnet new xunit -o MySpecificTest.Infrastructure.IntegrationTests
+dotnet sln add .\MySpecificTest.Infrastructure.IntegrationTests
+```
+
+In csproj file, change the first line \
+from `<Project Sdk="Microsoft.NET.Sdk">`\
+to `<Project Sdk="Microsoft.NET.Sdk.Web">`
+
+and add this package:
+
+```ps
+install-package Microsoft.AspNetCore.Mvc.Testing
+```
+
+### Execute WebApi Controller Endpoint
+
+This code will run your Endpoint like am manual call in Swagger (services like Repo gets injected) and
+
+> Database statements gets executed !!
+
+```cs
+public class BasicTests
+    : IClassFixture<WebApplicationFactory<MySpecificTest.WebApi.Startup>>
+{
+    private readonly WebApplicationFactory<MySpecificTest.WebApi.Startup> _factory;
+
+    public BasicTests(WebApplicationFactory<MySpecificTest.WebApi.Startup> factory)
+    {
+        _factory = factory;
+    }
+
+    [Theory]
+    [InlineData("/WeatherForecast")]
+    public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
+    {
+        // Arrange
+        var client = _factory.CreateClient();
+
+        // Act
+        var response = await client.GetAsync(url);
+
+        // Assert
+        response.EnsureSuccessStatusCode(); // Status Code 200-299
+        Assert.Equal("application/json; charset=utf-8", response.Content.Headers.ContentType.ToString());
+    }
+}
+```
+
 ## Information
 
 - EF Core Basics: <https://github.com/boeschenstein/angular9-dotnetcore-ef-sql>
 - MediatR Wiki: <https://github.com/jbogard/MediatR/wiki>
 - Full application (ASP.NET Core, EF Core, MeditR, Specification Pattern): <https://github.com/dotnet-architecture/eShopOnWeb>
+- Unit testing <https://docs.microsoft.com/en-us/dotnet/core/testing/>
+- Integration Testing <https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests>

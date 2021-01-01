@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MySpecificTest.WebApi", "My
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MySpecificTest.Infrastructure", "MySpecificTest.Infrastructure\MySpecificTest.Infrastructure.csproj", "{1EE23073-4165-49B1-8191-6343B6DFB1CF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MySpecificTest.Infrastructure.IntegrationTests", "MySpecificTest.Infrastructure.IntegrationTests\MySpecificTest.Infrastructure.IntegrationTests.csproj", "{0A66BCA3-E07B-41C4-8BBF-4EE791E0DC43}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1EE23073-4165-49B1-8191-6343B6DFB1CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EE23073-4165-49B1-8191-6343B6DFB1CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EE23073-4165-49B1-8191-6343B6DFB1CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A66BCA3-E07B-41C4-8BBF-4EE791E0DC43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A66BCA3-E07B-41C4-8BBF-4EE791E0DC43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A66BCA3-E07B-41C4-8BBF-4EE791E0DC43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A66BCA3-E07B-41C4-8BBF-4EE791E0DC43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
