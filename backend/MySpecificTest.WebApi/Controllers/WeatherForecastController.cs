@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MySpecificTest.Infrastructure;
-using MySpecificTest.Infrastructure.SpecificationPattern;
+using MySpecificTest.Infrastructure.MediatR;
 
 namespace MySpecificTest.WebApi.Controllers
 {
@@ -19,20 +21,20 @@ namespace MySpecificTest.WebApi.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly BloggingContext db;
-        private readonly IGenericRepository<Blog> repo;
+        private readonly IMediator mediator;
 
         public WeatherForecastController(
             ILogger<WeatherForecastController> logger,
             BloggingContext bloggingContext,
-            IGenericRepository<Blog> repository)
+            IMediator mediator)
         {
             _logger = logger;
             db = bloggingContext;
-            repo = repository;
+            this.mediator = mediator;
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task<IEnumerable<WeatherForecast>> Get()
         {
             // Create
             Console.WriteLine("Inserting a new blog");
@@ -57,7 +59,8 @@ namespace MySpecificTest.WebApi.Controllers
             db.SaveChanges();
 
             // Query by Specification Repository
-            IEnumerable<Blog> blogs = repo.List(new BlogWithItemsSpecification("https://devblogs.microsoft.com/dotnet"));
+
+            IEnumerable<Blog> blogs = await mediator.Send(new BlogWithItemsRequest("https://devblogs.microsoft.com/dotnet"));
             foreach (var item in blogs)
             {
                 Console.WriteLine($"== BLOG: {item.BlogId}, {item.Url}");

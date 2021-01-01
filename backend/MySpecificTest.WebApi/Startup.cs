@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MySpecificTest.Infrastructure;
+using MySpecificTest.Infrastructure.MediatR;
 using MySpecificTest.Infrastructure.SpecificationPattern;
 
 namespace MySpecificTest.WebApi
@@ -31,6 +33,8 @@ namespace MySpecificTest.WebApi
             services.AddDbContext<BloggingContext>(c => c.UseSqlServer(Configuration.GetConnectionString("BloggingConnection")));
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            services.AddMediatR(typeof(BlogWithItemsRequest)); // Assembly
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -18,6 +18,7 @@
     - [Generic Repository](#generic-repository)
   - [Move ConnectionString to appSettings.json](#move-connectionstring-to-appsettingsjson)
   - [Inject Generic Repository](#inject-generic-repository)
+  - [MediatR](#mediatr)
   - [Information](#information)
 
 ## Add EF
@@ -155,6 +156,54 @@ public WeatherForecastController(
 }
 ```
 
+## MediatR
+
+Add MediatR to WebApi and assembly, where the requests/responses are implemented:
+
+`Install-Package MediatR`
+
+Add MediatR for ASP.NET Core:
+
+`Install-Package MediatR.Extensions.Microsoft.DependencyInjection`
+
+and activate it like this:
+
+```cs
+services.AddMediatR(typeof(BlogWithItemsRequest)); // Assembly
+```
+
+Create the first Request/response:
+
+```cs
+public class BlogWithItemsRequest : IRequest<IEnumerable<Blog>>
+{
+    public string Url { get; private set; }
+
+    public BlogWithItemsRequest(string url)
+    {
+        Url = url;
+    }
+}
+
+public class BlogWithItemsRequestHandler : IRequestHandler<BlogWithItemsRequest, IEnumerable<Blog>>
+{
+    private readonly IGenericRepository<Blog> _repository;
+
+    public BlogWithItemsRequestHandler(IGenericRepository<Blog> repository)
+    {
+        _repository = repository;
+    }
+
+    public Task<IEnumerable<Blog>> Handle(BlogWithItemsRequest request, CancellationToken cancellationToken)
+    {
+        IEnumerable<Blog> blogs = _repository.List(new BlogWithItemsSpecification(request.Url));
+        return Task.FromResult(blogs);
+    }
+}
+```
+
 ## Information
 
-- Basics: <https://github.com/boeschenstein/angular9-dotnetcore-ef-sql>
+- EF Core Basics: <https://github.com/boeschenstein/angular9-dotnetcore-ef-sql>
+- MediatR Wiki: <https://github.com/jbogard/MediatR/wiki>
+- Full application (ASP.NET Core, EF Core, MeditR, Specification Pattern): <https://github.com/dotnet-architecture/eShopOnWeb>
