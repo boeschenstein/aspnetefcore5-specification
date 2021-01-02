@@ -24,6 +24,7 @@
     - [Execute WebApi Controller Endpoint](#execute-webapi-controller-endpoint)
     - [EF Core Unit testing](#ef-core-unit-testing)
     - [Approach: InMemoryDB](#approach-inmemorydb)
+    - [Approach: SQLite](#approach-sqlite)
   - [Information](#information)
 
 ## Add EF
@@ -293,6 +294,16 @@ install-package Microsoft.EntityFrameworkCore.Tools
 
 <https://docs.microsoft.com/en-us/ef/core/testing/#approach-3-the-ef-core-in-memory-database>
 
+Restrictions compared to SQL Server:
+
+- case-sensitive
+- It is not a relational database.
+  - no referential integrity
+  - no cascade delete
+- It doesn't support transactions.
+- It cannot run raw SQL queries.
+- It is not optimized for performance.
+
 To avoid execution in the real database, you can use InMemoryDB from CustomWebApplicationFactory instead of WebApplicationFactory:
 
 <details>
@@ -349,6 +360,35 @@ The most important line is this:
 db.Database.EnsureCreated(); // this will create the database (using your DbContext) if it does not exist
 ```
 
+### Approach: SQLite
+
+<https://docs.microsoft.com/en-us/ef/core/testing/#approach-2-sqlite>
+
+This is a better option than InMemoryDB, but there are still some restrictions compared to SQL Server:
+
+- SQLite inevitability doesn't support everything that your production database system does.
+- SQLite will behave differently than your production database system for some queries.
+  - case-sensitive
+  - no DateTimeOffset: use workaround
+
+```cs
+dotnet add package Microsoft.Data.Sqlite
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+```
+
+Spot the difference: SQLite needs an open connection:
+
+```cs
+var connection = new SqliteConnection("Filename=:memory:"); // sqlite needs an open connections
+connection.Open();
+
+services.AddDbContext<BloggingContext>(options =>
+{
+    //options.UseInMemoryDatabase("InMemoryDbForTesting");
+    options.UseSqlite(connection);
+});
+```
+
 ## Information
 
 - EF Core Basics: <https://github.com/boeschenstein/angular9-dotnetcore-ef-sql>
@@ -358,3 +398,4 @@ db.Database.EnsureCreated(); // this will create the database (using your DbCont
   - Unit testing <https://docs.microsoft.com/en-us/dotnet/core/testing/>
   - Integration Testing <https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests>
   - EF Core Testing: <https://docs.microsoft.com/en-us/ef/core/testing/>
+- SQLite: <https://docs.microsoft.com/en-us/dotnet/standard/data/sqlite>
