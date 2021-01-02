@@ -1,15 +1,14 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
 namespace MySpecificTest.Infrastructure.IntegrationTests
 {
     public class BasicTests
-        : IClassFixture<WebApplicationFactory<MySpecificTest.WebApi.Startup>>
+        : IClassFixture<CustomWebApplicationFactory<MySpecificTest.WebApi.Startup>>
     {
-        private readonly WebApplicationFactory<MySpecificTest.WebApi.Startup> _factory;
+        private readonly CustomWebApplicationFactory<MySpecificTest.WebApi.Startup> _factory;
 
-        public BasicTests(WebApplicationFactory<MySpecificTest.WebApi.Startup> factory)
+        public BasicTests(CustomWebApplicationFactory<MySpecificTest.WebApi.Startup> factory)
         {
             _factory = factory;
         }

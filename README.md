@@ -22,6 +22,8 @@
   - [MediatR](#mediatr)
   - [Integration Tests](#integration-tests)
     - [Execute WebApi Controller Endpoint](#execute-webapi-controller-endpoint)
+    - [EF Core Unit testing](#ef-core-unit-testing)
+    - [Approach: InMemoryDB](#approach-inmemorydb)
   - [Information](#information)
 
 ## Add EF
@@ -273,10 +275,86 @@ public class BasicTests
 }
 ```
 
+### EF Core Unit testing
+
+<https://docs.microsoft.com/en-us/ef/core/testing/>
+
+Preparation: Add this to your integration test project:
+
+```ps
+install-package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
+install-package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+install-package Microsoft.EntityFrameworkCore
+install-package Microsoft.EntityFrameworkCore.InMemory
+install-package Microsoft.EntityFrameworkCore.Tools
+```
+
+### Approach: InMemoryDB
+
+<https://docs.microsoft.com/en-us/ef/core/testing/#approach-3-the-ef-core-in-memory-database>
+
+To avoid execution in the real database, you can use InMemoryDB from CustomWebApplicationFactory instead of WebApplicationFactory:
+
+<details>
+  <summary>Show me the code!</summary>
+
+```cs
+// https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-5.0#customize-webapplicationfactory
+public class CustomWebApplicationFactory<TStartup>
+    : WebApplicationFactory<TStartup> where TStartup : class
+{
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.ConfigureServices(services =>
+        {
+            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<BloggingContext>));
+
+            services.Remove(descriptor);
+
+            services.AddDbContext<BloggingContext>(options =>
+            {
+                options.UseInMemoryDatabase("InMemoryDbForTesting");
+            });
+
+            var sp = services.BuildServiceProvider();
+
+            using (var scope = sp.CreateScope())
+            {
+                var scopedServices = scope.ServiceProvider;
+                var db = scopedServices.GetRequiredService<BloggingContext>();
+                var logger = scopedServices.GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
+
+                db.Database.EnsureCreated(); // this will create the database (using your DbContext) if it does not exist
+
+                try
+                {
+                    //Utilities.InitializeDbForTests(db);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, $"An error occurred seeding the database with test messages. Error: {ex.Message}");
+                }
+            }
+        });
+    }
+}
+
+```
+
+</details>
+
+The most important line is this:
+
+```cs
+db.Database.EnsureCreated(); // this will create the database (using your DbContext) if it does not exist
+```
+
 ## Information
 
 - EF Core Basics: <https://github.com/boeschenstein/angular9-dotnetcore-ef-sql>
 - MediatR Wiki: <https://github.com/jbogard/MediatR/wiki>
 - Full application (ASP.NET Core, EF Core, MeditR, Specification Pattern): <https://github.com/dotnet-architecture/eShopOnWeb>
-- Unit testing <https://docs.microsoft.com/en-us/dotnet/core/testing/>
-- Integration Testing <https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests>
+- Testing
+  - Unit testing <https://docs.microsoft.com/en-us/dotnet/core/testing/>
+  - Integration Testing <https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests>
+  - EF Core Testing: <https://docs.microsoft.com/en-us/ef/core/testing/>
