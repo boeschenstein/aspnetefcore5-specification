@@ -22,6 +22,8 @@
   - [MediatR](#mediatr)
   - [Integration Tests](#integration-tests)
     - [Execute WebApi Controller Endpoint](#execute-webapi-controller-endpoint)
+      - [Option a) Execute controller from outside](#option-a-execute-controller-from-outside)
+      - [Option b) Call new Controller](#option-b-call-new-controller)
     - [EF Core Unit testing](#ef-core-unit-testing)
     - [Approach: InMemoryDB](#approach-inmemorydb)
     - [Approach: SQLite](#approach-sqlite)
@@ -244,7 +246,7 @@ install-package Microsoft.AspNetCore.Mvc.Testing
 
 ### Execute WebApi Controller Endpoint
 
-This code will run your Endpoint like am manual call in Swagger (services like Repo gets injected) and
+This code will run your Endpoint like a manual call in Swagger (services like Repo gets injected) and
 
 > Database statements gets executed !!
 
@@ -275,6 +277,55 @@ public class BasicTests
     }
 }
 ```
+
+You can find more examples here: <https://github.com/dotnet-architecture/eShopOnWeb>
+
+Mock a Service: <https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-5.0#inject-mock-services>
+
+#### Option a) Execute controller from outside
+
+To execute the controller from outside - like the example before - is the broadest test scenario. Another way to test the controller, can be this:
+
+#### Option b) Call new Controller
+
+<https://docs.microsoft.com/en-us/ef/core/testing/testing-sample#test-structure>
+
+<details>
+  <summary>Show me the code!</summary>
+
+```cs
+// from https://github.com/dotnet-architecture/eShopOnWeb
+public class SetQuantities
+{
+    private readonly CatalogContext _catalogContext;
+    private readonly IAsyncRepository<Basket> _basketRepository;
+    private readonly BasketBuilder BasketBuilder = new BasketBuilder();
+
+    public SetQuantities()
+    {
+        var dbOptions = new DbContextOptionsBuilder<CatalogContext>()
+            .UseInMemoryDatabase(databaseName: "TestCatalog")
+            .Options;
+        _catalogContext = new CatalogContext(dbOptions);
+        _basketRepository = new EfRepository<Basket>(_catalogContext);
+    }
+
+    [Fact]
+    public async Task RemoveEmptyQuantities()
+    {
+        var basket = BasketBuilder.WithOneBasketItem();
+        var basketService = new BasketService(_basketRepository, null);
+        await _basketRepository.AddAsync(basket);
+        _catalogContext.SaveChanges();
+
+        await basketService.SetQuantities(BasketBuilder.BasketId, new Dictionary<string, int>() { { BasketBuilder.BasketId.ToString(), 0 } });
+
+        Assert.Equal(0, basket.Items.Count);
+    }
+}
+```
+
+</details>
 
 ### EF Core Unit testing
 
@@ -349,7 +400,6 @@ public class CustomWebApplicationFactory<TStartup>
         });
     }
 }
-
 ```
 
 </details>
