@@ -5,6 +5,7 @@
 - Specification pattern
 - MediatR
 - Integration tests
+- Json (System.Text.Json vs. NewtonSoft)
 
 ## Content
 
@@ -148,7 +149,7 @@ public WeatherForecastController(
 
 ## Inject Generic Repository
 
-Define Generic Injection:
+Define Open Generic Injection:
 
 ```cs
 services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -278,6 +279,14 @@ public class BasicTests
 }
 ```
 
+>Use a CustomWebApplicationFactory instead of WebApplicationFactory (inherit form WebApplicationFactory) use a complete new set of config (aka program.cs/startup.cs)
+
+```cs
+    public class BasicTests
+        : IClassFixture<CustomWebApplicationFactory<MySpecificTest.WebApi.Startup>>
+    { // the whole code will follow
+```
+
 You can find more examples here: <https://github.com/dotnet-architecture/eShopOnWeb>
 
 Mock a Service: <https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-5.0#inject-mock-services>
@@ -391,6 +400,7 @@ public class CustomWebApplicationFactory<TStartup>
                 try
                 {
                     //Utilities.InitializeDbForTests(db);
+                    // todo: add a basic set of entities for testing purposes
                 }
                 catch (Exception ex)
                 {
@@ -449,3 +459,9 @@ services.AddDbContext<BloggingContext>(options =>
   - Integration Testing <https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests>
   - EF Core Testing: <https://docs.microsoft.com/en-us/ef/core/testing/>
 - SQLite: <https://docs.microsoft.com/en-us/dotnet/standard/data/sqlite>
+- System.Text.Json vs. NewtonSoft
+  - Serialization in .NET: <https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-overview>
+  - Intro: <https://devblogs.microsoft.com/dotnet/try-the-new-system-text-json-apis/>
+  - Migrate: <https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-migrate-from-newtonsoft-how-to>
+  - New in .NET 5: <https://devblogs.microsoft.com/dotnet/whats-next-for-system-text-json/>
+  - [JsonDocument and JsonElement compared to JToken (like JObject, JArray)](https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-migrate-from-newtonsoft-how-to?pivots=dotnet-5-0#jsondocument-and-jsonelement-compared-to-jtoken-like-jobject-jarray)

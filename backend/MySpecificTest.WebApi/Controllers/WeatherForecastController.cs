@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MySpecificTest.Infrastructure;
-using MySpecificTest.Infrastructure.MediatR;
 
 namespace MySpecificTest.WebApi.Controllers
 {
@@ -20,60 +17,17 @@ namespace MySpecificTest.WebApi.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-        private readonly BloggingContext db;
-        private readonly IMediator mediator;
 
         public WeatherForecastController(
-            ILogger<WeatherForecastController> logger,
-            BloggingContext bloggingContext,
-            IMediator mediator)
+            ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
-            db = bloggingContext;
-            this.mediator = mediator;
         }
 
         [HttpGet]
         public async Task<IEnumerable<WeatherForecast>> Get()
         {
-            // Create
-            Console.WriteLine("Inserting a new blog");
-            db.Add(new Blog { Url = "http://blogs.msdn.com/adonet" });
-            db.SaveChanges();
-
-            // Read
-            Console.WriteLine("Querying for a blog");
-            var blog = db.Blogs
-                .OrderBy(b => b.BlogId)
-                .First();
-
-            // Update
-            Console.WriteLine("Updating the blog and adding a post");
-            blog.Url = "https://devblogs.microsoft.com/dotnet";
-            blog.Posts.Add(
-                new Post
-                {
-                    Title = "Hello World",
-                    Content = "I wrote an app using EF Core!"
-                });
-            db.SaveChanges();
-
-            // Query by Specification Repository
-
-            IEnumerable<Blog> blogs = await mediator.Send(new BlogWithItemsRequest("https://devblogs.microsoft.com/dotnet"));
-            foreach (var item in blogs)
-            {
-                Console.WriteLine($"== BLOG: {item.BlogId}, {item.Url}");
-                foreach (var post in item.Posts)
-                {
-                    Console.WriteLine($"    {post.Title}");
-                }
-            }
-
-            // Delete
-            Console.WriteLine("Delete the blog");
-            db.Remove(blog);
-            db.SaveChanges();
+            _logger.LogInformation("Getting Weatherforecasts");
 
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast

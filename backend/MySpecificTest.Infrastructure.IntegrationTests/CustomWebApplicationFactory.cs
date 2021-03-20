@@ -46,6 +46,9 @@ namespace MySpecificTest.Infrastructure.IntegrationTests
                     try
                     {
                         //Utilities.InitializeDbForTests(db);
+
+                        db.Add(new Blog { Url="my.test.blog",BlogId=-1 });
+                        db.SaveChanges();
                     }
                     catch (Exception ex)
                     {
