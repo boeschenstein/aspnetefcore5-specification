@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Xunit;
 using static MySpecificTest.WebApi.Controllers.BlogController;
 
@@ -67,6 +68,11 @@ namespace MySpecificTest.Infrastructure.IntegrationTests
             var blog = res.First();
             Assert.Equal(-1, blog.BlogId);
             Assert.Equal("my.test.blog", blog.Url);
+
+            // FluentAssertions: https://fluentassertions.com/introduction
+            blog.BlogId.Should().Be(-1);
+            blog.Url.Should().StartWith("my").And.EndWith("blog").And.Contain("test").And.HaveLength(12);
+            blog.Should().BeEquivalentTo(new Blog { BlogId = -1, Url = "my.test.blog" });
         }
 
         [Fact]

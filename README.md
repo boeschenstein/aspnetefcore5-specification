@@ -28,6 +28,8 @@
     - [EF Core Unit testing](#ef-core-unit-testing)
     - [Approach: InMemoryDB](#approach-inmemorydb)
     - [Approach: SQLite](#approach-sqlite)
+  - [Unit Test Helpers](#unit-test-helpers)
+    - [FluentAssertions](#fluentassertions)
   - [Information](#information)
 
 ## Add EF
@@ -449,6 +451,19 @@ services.AddDbContext<BloggingContext>(options =>
 });
 ```
 
+## Unit Test Helpers
+
+### FluentAssertions
+
+`install-package FluentAssertions`
+
+```cs
+blog.BlogId.Should().Be(-1);
+blog.Url.Should().StartWith("my").And.EndWith("blog").And.Contain("test").And.HaveLength(12);
+
+blog.Should().BeEquivalentTo(new Blog { BlogId = -1, Url = "my.test.blog" });
+```
+
 ## Information
 
 - EF Core Basics: <https://github.com/boeschenstein/angular9-dotnetcore-ef-sql>
@@ -465,3 +480,7 @@ services.AddDbContext<BloggingContext>(options =>
   - Migrate: <https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-migrate-from-newtonsoft-how-to>
   - New in .NET 5: <https://devblogs.microsoft.com/dotnet/whats-next-for-system-text-json/>
   - [JsonDocument and JsonElement compared to JToken (like JObject, JArray)](https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-migrate-from-newtonsoft-how-to?pivots=dotnet-5-0#jsondocument-and-jsonelement-compared-to-jtoken-like-jobject-jarray)
+- Unit testing
+  - <https://fluentassertions.com/>
+
+  -
