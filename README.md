@@ -464,6 +464,8 @@ blog.Url.Should().StartWith("my").And.EndWith("blog").And.Contain("test").And.Ha
 blog.Should().BeEquivalentTo(new Blog { BlogId = -1, Url = "my.test.blog" });
 ```
 
+Custom Assertion: check code. Source: <https://www.youtube.com/watch?v=WybRJ_LKGb
+
 ## Information
 
 - EF Core Basics: <https://github.com/boeschenstein/angular9-dotnetcore-ef-sql>

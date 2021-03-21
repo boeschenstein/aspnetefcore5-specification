@@ -29,11 +29,14 @@ namespace MySpecificTest.WebApi.Controllers
         }
 
         [HttpPost]
+        [Produces("application/json")]
         public async Task<IEnumerable<Blog>> Post(UrlRequestDto myUrl)
         {
             _logger.LogInformation("Getting Blogs");
 
             IEnumerable<Blog> blogs = await mediator.Send(new BlogWithItemsRequest(myUrl.Url));
+
+            HttpContext.Response.Headers.Add("row-count", blogs.Count().ToString());
             return blogs;
         }
 

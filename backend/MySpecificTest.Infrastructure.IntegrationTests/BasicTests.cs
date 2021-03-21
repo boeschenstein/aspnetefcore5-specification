@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
+using MySpecificTest.Infrastructure.IntegrationTests.FluentAssertionsExtensibility;
 using Xunit;
 using static MySpecificTest.WebApi.Controllers.BlogController;
 
@@ -73,6 +74,10 @@ namespace MySpecificTest.Infrastructure.IntegrationTests
             blog.BlogId.Should().Be(-1);
             blog.Url.Should().StartWith("my").And.EndWith("blog").And.Contain("test").And.HaveLength(12);
             blog.Should().BeEquivalentTo(new Blog { BlogId = -1, Url = "my.test.blog" });
+            response.Should()
+                .BeOk() // custom assertion
+                .And.HaveReason("OK") // custom assertion
+                .And.HaveHeader("row-count").Which.Should().Contain("1");  // custom assertion
         }
 
         [Fact]
