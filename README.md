@@ -30,7 +30,8 @@
     - [Approach: SQLite](#approach-sqlite)
   - [Unit Test Helpers](#unit-test-helpers)
     - [FluentAssertions](#fluentassertions)
-    - [AutoMoqer/AutoMoqCore](#automoqerautomoqcore)
+    - [Moq, AutoMoqer/AutoMoqCore](#moq-automoqerautomoqcore)
+    - [Bogus, AutoBogus](#bogus-autobogus)
   - [Information](#information)
 
 ## Add EF
@@ -471,9 +472,11 @@ blog.Should().BeEquivalentTo(new Blog { BlogId = -1, Url = "my.test.blog" });
 
 Custom Assertion: check code. Source: <<https://www.youtube.com/watch?v=WybRJ_LKGb>
 
-### AutoMoqer/AutoMoqCore
+### Moq, AutoMoqer/AutoMoqCore
 
-AutoMoqer is an "auto-mocking" container that creates objects for you. Just tell it what class to create and it will create it.
+> Moq: The most popular and friendly mocking framework for .NET
+
+> AutoMoqer is an "auto-mocking" container that creates objects for you. Just tell it what class to create and it will create it.
 
 `install-package AutoMoqCore`
 
@@ -499,6 +502,12 @@ mocker.GetMock<IDependencyToCheck>()
    .Verify(x => x.CallMe("TEST DATA"), Moq.Times.Once);
 ```
 
+### Bogus, AutoBogus
+
+>Bogus: A simple and sane fake data generator for C#. Based on and ported from the famed faker.js.
+
+`install-package AutoBogus`
+
 ## Information
 
 - EF Core Basics: <https://github.com/boeschenstein/angular9-dotnetcore-ef-sql>
@@ -519,6 +528,10 @@ mocker.GetMock<IDependencyToCheck>()
   - FluentAssertions
     - <https://fluentassertions.com/>
 
-  - AutoMoq
+  - Moq, AutoMoq
+    - <https://github.com/Moq>
     - <https://github.com/thomashfr/AutoMoqCore>
     - .NET classic, with example: <https://github.com/darrencauthon/AutoMoq>
+  - Bogus, AutoBogus
+    - <https://github.com/nickdodd79/AutoBogus>
+	- Links and documentation: <https://github.com/bchavez/Bogus>
