@@ -8,11 +8,13 @@ namespace MySpecificTest.Infrastructure.MediatR
 {
     public class BlogWithItemsRequest : IRequest<IEnumerable<Blog>>
     {
-        public string Url { get; private set; }
+        //public string Url { get; private set; }
+        public BlogWithItemsSpecification Specification { get; }
 
         public BlogWithItemsRequest(string url)
         {
-            Url = url;
+            //Url = url;
+            this.Specification = new BlogWithItemsSpecification(url);
         }
     }
 
@@ -27,7 +29,11 @@ namespace MySpecificTest.Infrastructure.MediatR
 
         public Task<IEnumerable<Blog>> Handle(BlogWithItemsRequest request, CancellationToken cancellationToken)
         {
-            IEnumerable<Blog> blogs = _repository.List(new BlogWithItemsSpecification(request.Url));
+            // instantiate BlogWithItemsSpecification in BlogWithItemsRequest -> now we can use it in Unittesting (Moq, AutoMoqer)
+            // IEnumerable<Blog> blogs = _repository.List(new BlogWithItemsSpecification(request.Url)); // not moqable
+
+            IEnumerable<Blog> blogs = _repository.List(request.Specification);
+
             return Task.FromResult(blogs);
         }
     }

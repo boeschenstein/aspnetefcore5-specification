@@ -30,6 +30,7 @@
     - [Approach: SQLite](#approach-sqlite)
   - [Unit Test Helpers](#unit-test-helpers)
     - [FluentAssertions](#fluentassertions)
+    - [AutoMoqer/AutoMoqCore](#automoqerautomoqcore)
   - [Information](#information)
 
 ## Add EF
@@ -455,7 +456,11 @@ services.AddDbContext<BloggingContext>(options =>
 
 ### FluentAssertions
 
+A very extensive set of extension methods that allow you to more naturally specify the expected outcome of a TDD or BDD-style unit tests.
+
 `install-package FluentAssertions`
+
+Examples:
 
 ```cs
 blog.BlogId.Should().Be(-1);
@@ -464,7 +469,35 @@ blog.Url.Should().StartWith("my").And.EndWith("blog").And.Contain("test").And.Ha
 blog.Should().BeEquivalentTo(new Blog { BlogId = -1, Url = "my.test.blog" });
 ```
 
-Custom Assertion: check code. Source: <https://www.youtube.com/watch?v=WybRJ_LKGb
+Custom Assertion: check code. Source: <<https://www.youtube.com/watch?v=WybRJ_LKGb>
+
+### AutoMoqer/AutoMoqCore
+
+AutoMoqer is an "auto-mocking" container that creates objects for you. Just tell it what class to create and it will create it.
+
+`install-package AutoMoqCore`
+
+Examples:
+
+```cs
+var mocker = new AutoMoqCore.AutoMoqer();
+
+var myArgs = new MyArgs("myArg1");
+
+mocker.GetMock<IDataDependency>()
+   .Setup(x => x.GetDataArgs(myArgs))
+   .Returns("TEST DATA");
+
+// not to use new() is an advantage:
+// If constructor of ClassToTest gets more arguments, the following line does not need a change:
+var classToTest = mocker.Resolve<ClassToTest>(); // either use Create or Resolve
+
+classToTest.DoSomething(myArgs);
+// classToTest.DoSomething(new MyArgs("myArg1")); DOES NOT WORK - NEEDS TO BE THE SAME INSTANCE
+
+mocker.GetMock<IDependencyToCheck>()
+   .Verify(x => x.CallMe("TEST DATA"), Moq.Times.Once);
+```
 
 ## Information
 
@@ -483,6 +516,9 @@ Custom Assertion: check code. Source: <https://www.youtube.com/watch?v=WybRJ_LKG
   - New in .NET 5: <https://devblogs.microsoft.com/dotnet/whats-next-for-system-text-json/>
   - [JsonDocument and JsonElement compared to JToken (like JObject, JArray)](https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-migrate-from-newtonsoft-how-to?pivots=dotnet-5-0#jsondocument-and-jsonelement-compared-to-jtoken-like-jobject-jarray)
 - Unit testing
-  - <https://fluentassertions.com/>
+  - FluentAssertions
+    - <https://fluentassertions.com/>
 
-  -
+  - AutoMoq
+    - <https://github.com/thomashfr/AutoMoqCore>
+    - .NET classic, with example: <https://github.com/darrencauthon/AutoMoq>
