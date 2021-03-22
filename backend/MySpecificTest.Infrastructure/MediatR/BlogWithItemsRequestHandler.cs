@@ -8,12 +8,12 @@ namespace MySpecificTest.Infrastructure.MediatR
 {
     public class BlogWithItemsRequest : IRequest<IEnumerable<Blog>>
     {
-        //public string Url { get; private set; }
+        public string Url { get; }
         public BlogWithItemsSpecification Specification { get; }
 
         public BlogWithItemsRequest(string url)
         {
-            //Url = url;
+            Url = url;
             this.Specification = new BlogWithItemsSpecification(url);
         }
     }

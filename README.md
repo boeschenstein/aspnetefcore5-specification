@@ -30,8 +30,11 @@
     - [Approach: SQLite](#approach-sqlite)
   - [Unit Test Helpers](#unit-test-helpers)
     - [FluentAssertions](#fluentassertions)
-    - [Moq, AutoMoqer/AutoMoqCore](#moq-automoqerautomoqcore)
+    - [Moq](#moq)
+    - [AutoMoqer/AutoMoqCore](#automoqerautomoqcore)
     - [Bogus, AutoBogus](#bogus-autobogus)
+    - [AutoBogus / AutoFaker](#autobogus--autofaker)
+    - [AutoFixture](#autofixture)
   - [Information](#information)
 
 ## Add EF
@@ -472,9 +475,29 @@ blog.Should().BeEquivalentTo(new Blog { BlogId = -1, Url = "my.test.blog" });
 
 Custom Assertion: check code. Source: <<https://www.youtube.com/watch?v=WybRJ_LKGb>
 
-### Moq, AutoMoqer/AutoMoqCore
+### Moq
 
 > Moq: The most popular and friendly mocking framework for .NET
+
+```cs
+var mock = new Mock<ILoveThisLibrary>();
+
+// WOW! No record/replay weirdness?! :)
+mock.Setup(library => library.DownloadExists("2.0.0.0"))
+    .Returns(true);
+
+// Use the Object property on the mock to get a reference to the object
+// implementing ILoveThisLibrary, and then exercise it by calling methods on it
+ILoveThisLibrary lovable = mock.Object;
+bool download = lovable.DownloadExists("2.0.0.0");
+
+// Verify that the given method was indeed called with the expected value at most once
+mock.Verify(library => library.DownloadExists("2.0.0.0"), Times.AtMostOnce());
+```
+
+Detail: see next: AutoMoq... (AutoMoqer/AutoMoqCore)
+
+### AutoMoqer/AutoMoqCore
 
 > AutoMoqer is an "auto-mocking" container that creates objects for you. Just tell it what class to create and it will create it.
 
@@ -504,9 +527,76 @@ mocker.GetMock<IDependencyToCheck>()
 
 ### Bogus, AutoBogus
 
->Bogus: A simple and sane fake data generator for C#. Based on and ported from the famed faker.js.
+>Bogus: A simple and sane fake data generator for C#.
+
+Based on and ported from the famed faker.js.
+
+Details: see next: (optimized version): AutoBogus
+
+### AutoBogus / AutoFaker
+
+>A C# library complementing the Bogus generator by adding auto creation and population capabilities.
 
 `install-package AutoBogus`
+
+```cs
+Bogus.Faker<Customer> customerFaker = new AutoFaker<Customer>()
+  .RuleFor(fake => fake.Id, fake => fake.Random.Int(10, 20))
+  .RuleSet("empty", rules =>
+  {
+      rules.RuleFor(fake => fake.Id, () => 0);
+  });
+
+// Use explicit conversion or call Generate()
+var customer1 = (Customer)customerFaker;
+var customer2 = customerFaker.Generate();
+
+customer1.FirstName.Should().NotBe(customer1.LastName);
+customer1.FirstName.Should().NotBe(customer2.LastName);
+customer1.FirstName.Should().NotBe(customer2.FirstName);
+customer1.Id.Should<int>();
+customer1.Id.Should().BeInRange(10, 20, "random id's between 10 and 20 are generated");
+customer1.DateOfBirth.Should().NotBe(DateTime.Now);
+```
+
+### AutoFixture
+
+>AutoFixture is an open source framework for .NET designed to minimize the 'Arrange' phase of your unit tests
+
+```cmd
+install-package AutoFixture
+install-package AutoFixture.Xunit2
+```
+
+Fixture example without AutoFixture:
+
+```cs
+[Fact]
+public void IntroductoryTest()
+{
+    // Arrange
+    Fixture fixture = new Fixture();
+
+    int expectedNumber = fixture.Create<int>();
+    MyClass sut = fixture.Create<MyClass>();
+    // Act
+    int result = sut.Echo(expectedNumber);
+    // Assert
+    Assert.Equal(expectedNumber, result);
+}
+```
+
+Same example using AutoFixture:
+
+```cs
+[Theory, AutoData]
+public void IntroductoryTest(int expectedNumber, MyClass sut) {
+    // Act
+    int result = sut.Echo(expectedNumber);
+    // Assert
+    Assert.Equal(expectedNumber, result);
+}
+```
 
 ## Information
 
@@ -527,11 +617,17 @@ mocker.GetMock<IDependencyToCheck>()
 - Unit testing
   - FluentAssertions
     - <https://fluentassertions.com/>
-
   - Moq, AutoMoq
     - <https://github.com/Moq>
     - <https://github.com/thomashfr/AutoMoqCore>
     - .NET classic, with example: <https://github.com/darrencauthon/AutoMoq>
-  - Bogus, AutoBogus
+  - Bogus, AutoBogus, AutoFaker
     - <https://github.com/nickdodd79/AutoBogus>
-	- Links and documentation: <https://github.com/bchavez/Bogus>
+    - Links and documentation: <https://github.com/bchavez/Bogus>
+  - Other libraries: 2 different `Faker.net`:
+    - fakes data: addresses (UK, US), boolean, companies, countries, currencies, ...
+    - A) <https://github.com/oriches/faker-cs> (based on ruby faker)
+      - Nuget: <https://www.nuget.org/packages/Faker.Net>
+    - B) <https://github.com/jonwingfield/Faker.Net> (based on ruby ffaker, sugar)
+  - AutoFixture
+    - <https://github.com/AutoFixture/AutoFixture>
