@@ -598,6 +598,12 @@ public void IntroductoryTest(int expectedNumber, MyClass sut) {
 }
 ```
 
+## NewtonSoft vs. System.Text.Json   
+    
+|            | NewtonSoft                | System.Text.Json               |
+| ---------- | ------------------------- | ------------------------------ |
+| parse      | `JArray.Parse(content)`   | `JsonDocument.Parse(content);` |
+
 ## Information
 
 - EF Core Basics: <https://github.com/boeschenstein/angular9-dotnetcore-ef-sql>
