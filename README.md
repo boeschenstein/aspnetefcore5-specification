@@ -503,6 +503,8 @@ Detail: see next: AutoMoq... (AutoMoqer/AutoMoqCore)
 
 `install-package AutoMoqCore`
 
+> Alternative: see AutoFixture
+
 Examples:
 
 ```cs
@@ -539,6 +541,8 @@ Details: see next: (optimized version): AutoBogus
 
 `install-package AutoBogus`
 
+>Alternative: see AutoFixture
+
 ```cs
 Bogus.Faker<Customer> customerFaker = new AutoFaker<Customer>()
   .RuleFor(fake => fake.Id, fake => fake.Random.Int(10, 20))
@@ -562,6 +566,8 @@ customer1.DateOfBirth.Should().NotBe(DateTime.Now);
 ### AutoFixture
 
 >AutoFixture is an open source framework for .NET designed to minimize the 'Arrange' phase of your unit tests
+
+It also fills properties with test data.
 
 ```cmd
 install-package AutoFixture
@@ -598,6 +604,15 @@ public void IntroductoryTest(int expectedNumber, MyClass sut) {
 }
 ```
 
+AutoFaker can be more flexible:
+
+```cs
+var pipeline = fixture.Create<PropertyImportData>(); // AutoFixture was unable to create an instance from Serilog.ILogger because it's an interface.
+// no issues with AutoFaker
+var importFaker = new AutoFaker<PropertyImportData>();
+var importData = (PropertyImportData)importFaker;
+```
+
 ## Information
 
 - EF Core Basics: <https://github.com/boeschenstein/angular9-dotnetcore-ef-sql>
@@ -631,3 +646,4 @@ public void IntroductoryTest(int expectedNumber, MyClass sut) {
     - B) <https://github.com/jonwingfield/Faker.Net> (based on ruby ffaker, sugar)
   - AutoFixture
     - <https://github.com/AutoFixture/AutoFixture>
+  - Cheat Sheet Moq, xUnit, AutoFixture: <https://www.jankowskimichal.pl/wp-content/uploads/downloads/2016/01/Cheatsheet_Moq_xUnit_AutoFixture.pdf>
