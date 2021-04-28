@@ -613,6 +613,10 @@ var importFaker = new AutoFaker<PropertyImportData>();
 var importData = (PropertyImportData)importFaker;
 ```
 
+### Mock FileSystem
+
+<https://github.com/System-IO-Abstractions/System.IO.Abstractions>
+
 ## NewtonSoft vs. System.Text.Json   
     
 |            | NewtonSoft                | System.Text.Json               |
