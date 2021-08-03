@@ -626,6 +626,8 @@ var importData = (PropertyImportData)importFaker;
 ## Information
 
 - EF Core Basics: <https://github.com/boeschenstein/angular9-dotnetcore-ef-sql>
+- Specification:
+  - https://enterprisecraftsmanship.com/posts/specification-pattern-always-valid-domain-model/
 - MediatR Wiki: <https://github.com/jbogard/MediatR/wiki>
 - Full application (ASP.NET Core, EF Core, MeditR, Specification Pattern): <https://github.com/dotnet-architecture/eShopOnWeb>
 - Testing
