@@ -659,3 +659,6 @@ var importData = (PropertyImportData)importFaker;
   - AutoFixture
     - <https://github.com/AutoFixture/AutoFixture>
   - Cheat Sheet Moq, xUnit, AutoFixture: <https://www.jankowskimichal.pl/wp-content/uploads/downloads/2016/01/Cheatsheet_Moq_xUnit_AutoFixture.pdf>
+- Advanced Testing
+  - More Information on DDD testing: https://github.com/boeschenstein/clean-architecture/blob/main/README.md
+  - SpecFlow (todo)
