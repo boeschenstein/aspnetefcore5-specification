@@ -623,6 +623,10 @@ var importData = (PropertyImportData)importFaker;
 | ---------- | ------------------------- | ------------------------------ |
 | parse      | `JArray.Parse(content)`   | `JsonDocument.Parse(content);` |
 
+## Testing 
+
+- Testing, Unit testing Tools: <https://github.com/boeschenstein/testing>
+
 ## Information
 
 - EF Core Basics: <https://github.com/boeschenstein/angular9-dotnetcore-ef-sql>
@@ -630,10 +634,6 @@ var importData = (PropertyImportData)importFaker;
   - https://enterprisecraftsmanship.com/posts/specification-pattern-always-valid-domain-model/
 - MediatR Wiki: <https://github.com/jbogard/MediatR/wiki>
 - Full application (ASP.NET Core, EF Core, MeditR, Specification Pattern): <https://github.com/dotnet-architecture/eShopOnWeb>
-- Testing
-  - Unit testing <https://docs.microsoft.com/en-us/dotnet/core/testing/>
-  - Integration Testing <https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests>
-  - EF Core Testing: <https://docs.microsoft.com/en-us/ef/core/testing/>
 - SQLite: <https://docs.microsoft.com/en-us/dotnet/standard/data/sqlite>
 - System.Text.Json vs. NewtonSoft
   - Serialization in .NET: <https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-overview>
@@ -641,24 +641,3 @@ var importData = (PropertyImportData)importFaker;
   - Migrate: <https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-migrate-from-newtonsoft-how-to>
   - New in .NET 5: <https://devblogs.microsoft.com/dotnet/whats-next-for-system-text-json/>
   - [JsonDocument and JsonElement compared to JToken (like JObject, JArray)](https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-migrate-from-newtonsoft-how-to?pivots=dotnet-5-0#jsondocument-and-jsonelement-compared-to-jtoken-like-jobject-jarray)
-- Unit testing
-  - FluentAssertions
-    - <https://fluentassertions.com/>
-  - Moq, AutoMoq
-    - <https://github.com/Moq>
-    - <https://github.com/thomashfr/AutoMoqCore>
-    - .NET classic, with example: <https://github.com/darrencauthon/AutoMoq>
-  - Bogus, AutoBogus, AutoFaker
-    - <https://github.com/nickdodd79/AutoBogus>
-    - Links and documentation: <https://github.com/bchavez/Bogus>
-  - Other libraries: 2 different `Faker.net`:
-    - fakes data: addresses (UK, US), boolean, companies, countries, currencies, ...
-    - A) <https://github.com/oriches/faker-cs> (based on ruby faker)
-      - Nuget: <https://www.nuget.org/packages/Faker.Net>
-    - B) <https://github.com/jonwingfield/Faker.Net> (based on ruby ffaker, sugar)
-  - AutoFixture
-    - <https://github.com/AutoFixture/AutoFixture>
-  - Cheat Sheet Moq, xUnit, AutoFixture: <https://www.jankowskimichal.pl/wp-content/uploads/downloads/2016/01/Cheatsheet_Moq_xUnit_AutoFixture.pdf>
-- Advanced Testing
-  - More Information on DDD testing: https://github.com/boeschenstein/clean-architecture/blob/main/README.md
-  - SpecFlow (todo)
