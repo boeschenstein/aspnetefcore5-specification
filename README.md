@@ -623,6 +623,23 @@ var importData = (PropertyImportData)importFaker;
 | ---------- | ------------------------- | ------------------------------ |
 | parse      | `JArray.Parse(content)`   | `JsonDocument.Parse(content);` |
 
+  
+## Static Functions
+  
+Error:
+  
+```
+System.NotSupportedException : Unsupported expression: f => f.CustomStaticAsync(id, additionalInfo)
+Extension methods (here: CustomRepository.CustomStaticAsync) may not be used in setup / verification expressions.  
+```
+  
+>It is not possible to mock static functions
+  
+Solution:
+
+- There is no need to mock the static function
+- Instead, mock the functions, which are called by the static function.  
+
 ## Testing 
 
 - Testing, Unit testing Tools: <https://github.com/boeschenstein/testing>
