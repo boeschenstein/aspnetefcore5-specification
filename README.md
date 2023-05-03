@@ -495,6 +495,18 @@ bool download = lovable.DownloadExists("2.0.0.0");
 mock.Verify(library => library.DownloadExists("2.0.0.0"), Times.AtMostOnce());
 ```
 
+Moq ILogger: <https://stackoverflow.com/questions/58283208/how-to-mock-ilogger-logxxx-methods-on-netcore-3-0>
+
+```cs
+container.GetMock<ILogger<MyClass>>()
+         .Setup(l => l.Log(
+             It.IsAny<LogLevel>(),
+             It.IsAny<EventId>(),
+             It.IsAny<It.IsAnyType>(),
+             It.IsAny<Exception>(),
+             (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>())));
+```
+
 Detail: see next: AutoMoq... (AutoMoqer/AutoMoqCore)
 
 ### AutoMoqer/AutoMoqCore
