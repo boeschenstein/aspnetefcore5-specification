@@ -659,6 +659,7 @@ Solution:
 ## Information
 
 - EF Core Basics: <https://github.com/boeschenstein/angular9-dotnetcore-ef-sql>
+- Best practice (Naming): <https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices>
 - Specification:
   - https://enterprisecraftsmanship.com/posts/specification-pattern-always-valid-domain-model/
 - MediatR Wiki: <https://github.com/jbogard/MediatR/wiki>
