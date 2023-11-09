@@ -676,3 +676,4 @@ Solution:
   - Migrate: <https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-migrate-from-newtonsoft-how-to>
   - New in .NET 5: <https://devblogs.microsoft.com/dotnet/whats-next-for-system-text-json/>
   - [JsonDocument and JsonElement compared to JToken (like JObject, JArray)](https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-migrate-from-newtonsoft-how-to?pivots=dotnet-5-0#jsondocument-and-jsonelement-compared-to-jtoken-like-jobject-jarray)
+  - <https://devblogs.microsoft.com/dotnet/the-convenience-of-system-text-json/>
