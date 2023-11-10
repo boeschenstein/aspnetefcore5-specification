@@ -666,6 +666,7 @@ Solution:
 - EF Core Basics: <https://github.com/boeschenstein/angular9-dotnetcore-ef-sql>
 - Best practice (Naming): <https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices>
 - Specification Pattern:
+  - Microsoft Docs: <https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-implementation-entity-framework-core>
   - simple example: https://enterprisecraftsmanship.com/posts/specification-pattern-always-valid-domain-model/
   - Full fledged library https://specification.ardalis.com/
   - Seems state of the art: https://stackoverflow.com/questions/63975708/how-to-add-a-theninclude-for-a-nested-object-within-a-generic-specification-pat
