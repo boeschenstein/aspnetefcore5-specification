@@ -665,8 +665,10 @@ Solution:
 
 - EF Core Basics: <https://github.com/boeschenstein/angular9-dotnetcore-ef-sql>
 - Best practice (Naming): <https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices>
-- Specification:
-  - https://enterprisecraftsmanship.com/posts/specification-pattern-always-valid-domain-model/
+- Specification Pattern:
+  - simple example: https://enterprisecraftsmanship.com/posts/specification-pattern-always-valid-domain-model/
+  - Full fledged library https://specification.ardalis.com/
+  - Seems state of the art: https://stackoverflow.com/questions/63975708/how-to-add-a-theninclude-for-a-nested-object-within-a-generic-specification-pat
 - MediatR Wiki: <https://github.com/jbogard/MediatR/wiki>
 - Full application (ASP.NET Core, EF Core, MeditR, Specification Pattern): <https://github.com/dotnet-architecture/eShopOnWeb>
 - SQLite: <https://docs.microsoft.com/en-us/dotnet/standard/data/sqlite>
