@@ -664,6 +664,7 @@ Solution:
 ## Information
 
 - EF Core Basics: <https://github.com/boeschenstein/angular9-dotnetcore-ef-sql>
+  - Unit Of Work Pattern <https://www.devleader.ca/2024/02/05/unit-of-work-pattern-in-c-for-clean-architecture-what-you-need-to-know/>
 - Best practice (Naming): <https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices>
 - Specification Pattern:
   - Microsoft Docs: <https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-implementation-entity-framework-core>
